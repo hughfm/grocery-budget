@@ -1,3 +1,5 @@
+import createLocalStorage from './localStorage.js';
+
 const { useState, useRef } = React;
 
 const DEFAULT_AMOUNT = 0;
@@ -9,22 +11,23 @@ const createItem = id => ({
   amount: DEFAULT_AMOUNT,
 });
 
-const localStorage = window.localStorage;
-
-const getInitialState = () => {
-  const itemsString = localStorage.getItem('items');
-  return itemsString ? JSON.parse(itemsString) : [];
-};
+const { get: getLocalItems, set: setLocalItems } = createLocalStorage('items');
 
 function useItemsList() {
-  const id = useRef(0);
-
-  const [items, setItemsState] = useState(getInitialState);
+  const [items, setItemsState] = useState(() => (getLocalItems() || []));
   const [editing, setEditing] = useState(null);
+
+  const id = useRef(null);
+
+  if (id.current === null) {
+    id.current = items.length
+      ? Math.max(...items.map(({ id }) => id))
+      : 0;
+  }
 
   const setItems = (items) => {
     setItemsState(items);
-    localStorage.setItem('items', JSON.stringify(items));
+    setLocalItems(items);
   };
 
   const newItem = () => {

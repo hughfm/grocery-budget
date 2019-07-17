@@ -1,10 +1,19 @@
 import Item from './Item.js';
 import useItemsList from './useItemsList.js';
+import createLocalStorage from './localStorage.js';
 
 const { useState } = React;
 
+const { get: getLocalBudget, set: setLocalBudget } = createLocalStorage('budget');
+
 function App() {
-  const [budget, setBudget] = useState(20);
+  const [budget, setBudgetState] = useState(() => (getLocalBudget() || 40));
+
+  const setBudget = (value) => {
+    setBudgetState(value);
+    setLocalBudget(value);
+  };
+
   const {
     items,
     editing,
