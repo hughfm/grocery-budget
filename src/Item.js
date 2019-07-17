@@ -22,10 +22,6 @@ function Item({
     }
   }, [editing]);
 
-  // useEffect(() => {
-  //   if (!editing) update(draft);
-  // }, [editing]);
-
   const updateOnEnter = ({ key }) => {
     if (key === 'Enter') update(draft);
   };
@@ -82,7 +78,7 @@ function Item({
             value={draftAmount}
             ref={amountInput}
             className="itemAmount"
-            onChange={({ target }) => setDraft(Object.assign({}, draft, { amount: parseInt(target.value) }))}
+            onChange={({ target }) => setDraft(Object.assign({}, draft, { amount: parseFloat(target.value) }))}
           />
         ) : (
           <div

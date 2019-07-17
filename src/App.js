@@ -23,6 +23,16 @@ function App() {
     editItem,
   } = useItemsList();
 
+  const totalAmount = items.reduce((sum, { amount }) => sum + amount, 0);
+  const currentPosition = budget - totalAmount;
+  const positionClasses = ["currentPosition"];
+
+  if (currentPosition >= 0) {
+    positionClasses.push("positive");
+  } else {
+    positionClasses.push("negative");
+  }
+
   return (
     <div>
       <header className="header">
@@ -30,17 +40,20 @@ function App() {
       </header>
       <div className="stickyStats">
         <div>
-          <label>
-            Budget $
-            <input
-              type="number"
-              value={budget}
-              onChange={({ target }) => setBudget(target.value)}
-            />
-          </label>
+          <input
+            type="number"
+            value={budget}
+            onChange={({ target }) => setBudget(target.value)}
+            className="budgetInput"
+          />
         </div>
-        <div>
-          Total: ${items.reduce((sum, { amount }) => sum + amount, 0)}
+        <div className="totalAndPosition">
+          <div className="runningTotal">
+            {totalAmount}
+          </div>
+          <div className={positionClasses.join(" ")}>
+            {currentPosition}
+          </div>
         </div>
       </div>
       <div>

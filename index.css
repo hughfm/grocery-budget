@@ -27,7 +27,6 @@ input {
   top: 0;
   background: white;
   box-shadow: 0 2px 5px gray;
-  padding: 8px 0;
 }
 
 .itemsList {
@@ -40,6 +39,8 @@ input {
   border-bottom: 1px solid;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  min-height: 48px;
 }
 
 .listItem.edited {
@@ -57,10 +58,11 @@ input {
 .addItem {
   text-align: center;
   background: lightgray;
-  padding: 8px 0;
+  padding: 16px 0;
   font-weight: bold;
   width: 100%;
-  border: none;
+  border: 2px solid black;
+  font-size: 24px;
 }
 
 .removeItem {
@@ -72,4 +74,32 @@ input {
   flex-grow: 1;
   flex-basis: 0;
   padding: 8px;
+}
+
+.budgetInput {
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 auto;
+  display: block;
+}
+
+.totalAndPosition {
+  display: flex;
+}
+
+.runningTotal, .currentPosition {
+  flex-basis: 0;
+  flex-grow: 1;
+  text-align: center;
+  padding: 8px;
+  font-size: 18px;
+}
+
+.currentPosition.positive {
+  background: lightgreen;
+}
+
+.currentPosition.negative {
+  background: lightcoral;
 }
