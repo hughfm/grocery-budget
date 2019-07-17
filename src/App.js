@@ -1,4 +1,6 @@
-const { useState, useRef, useEffect } = React;
+import Item from './Item.js';
+
+const { useState, useRef } = React;
 
 const DEFAULT_AMOUNT = 0;
 const DEFAULT_NAME = 'New Item';
@@ -6,10 +8,7 @@ const DEFAULT_NAME = 'New Item';
 function App() {
   const [budget, setBudget] = useState(20);
   const [items, setItems] = useState([]);
-  const [editingName, setEditingName] = useState(null);
-  const [editingAmount, setEditingAmount] = useState(null);
-  const [editedName, setEditedName] = useState(null);
-  const [editedAmount, setEditedAmount] = useState(null);
+  const [editing, setEditing] = useState(null);
 
   const id = useRef(0);
 
@@ -23,138 +22,68 @@ function App() {
     };
   };
 
-  const nameInput = useRef();
-  const amountInput = useRef();
-
   const addItem = () => {
-    setItems([...items, newItem()]);
-    setEditingName(id.current);
-    setEditedName(DEFAULT_NAME);
+    const item = newItem();
+
+    setItems([...items, item]);
+    setEditing(item.id);
   };
 
-  useEffect(() => {
-    if (editingName && nameInput.current) {
-      nameInput.current.focus();
-      nameInput.current.select();
-    }
-  }, [editingName]);
+  const updateItem = id => (item) => {
+    setItems(items.map((i) => {
+      if (i.id !== id) return i;
+      return Object.assign({}, i, item);
+    }));
 
-  useEffect(() => {
-    if (editingAmount && amountInput.current) {
-      amountInput.current.focus();
-      amountInput.current.select();
-    }
-  }, [editingAmount]);
+    setEditing(null);
+  };
+
+  const destroyItem = id => () => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  const editItem = id => () => {
+    setEditing(id);
+  };
 
   return (
     <div>
       <header className="header">
         <h1>Grocery Budget</h1>
       </header>
-      <div>
-        <label>
-          Budget $
-          <input
-            type="number"
-            value={budget}
-            onChange={({ target }) => setBudget(target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        Total: ${items.reduce((sum, { amount }) => sum + amount, 0)}
+      <div className="stickyStats">
+        <div>
+          <label>
+            Budget $
+            <input
+              type="number"
+              value={budget}
+              onChange={({ target }) => setBudget(target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          Total: ${items.reduce((sum, { amount }) => sum + amount, 0)}
+        </div>
       </div>
       <div>
         <ul className="itemsList">
           {
-            items.map(({ id, name, amount }) => (
-              <li key={id} className="listItem">
-                {
-                  editingName === id ? (
-                    <input
-                      type="text"
-                      value={editedName}
-                      ref={nameInput}
-                      onChange={({ target }) => setEditedName(target.value)}
-                      className="itemName"
-                      onKeyDown={({ key, target }) => {
-                        if (key === 'Enter') {
-                          target.blur();
-                        }
-                      }}
-                      onBlur={() => {
-                        setEditingName(null);
-                        setItems(items.map((item) => {
-                          if (item.id !== id) return item;
-                          return Object.assign({}, item, { name: editedName });
-                        }));
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="itemName"
-                      tabIndex={0}
-                      onFocus={() => {
-                        setEditingName(id);
-                        setEditedName(name);
-                      }}
-                    >
-                      {name}
-                    </div>
-                  )
-                }
-
-                {
-                  editingAmount === id ? (
-                    <input
-                      type="number"
-                      min={0}
-                      value={editedAmount}
-                      ref={amountInput}
-                      className="itemAmount"
-                      onChange={({ target }) => setEditedAmount(parseInt(target.value))}
-                      onKeyDown={({ key, target }) => {
-                        if (key === 'Enter') {
-                          target.blur();
-                        }
-                      }}
-                      onBlur={() => {
-                        setEditingAmount(null);
-                        setItems(items.map((item) => {
-                          if (item.id !== id) return item;
-                          return Object.assign({}, item, { amount: editedAmount });
-                        }));
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="itemAmount"
-                      tabIndex={0}
-                      onFocus={() => {
-                        setEditingAmount(id);
-                        setEditedAmount(amount);
-                      }}
-                    >
-                      {`$${amount}`}
-                    </div>
-                  )
-                }
-
-                <span
-                  onClick={() => {
-                    setItems(items.filter(item => item.id !== id));
-                  }}
-                  className="removeItem"
-                >X</span>
-              </li>
+            items.map((item) => (
+              <Item
+                key={item.id}
+                item={item}
+                editing={editing === item.id}
+                update={updateItem(item.id)}
+                edit={editItem(item.id)}
+                destroy={destroyItem(item.id)}
+              />
             ))
           }
 
           <li>
             <button
-              onClick={() => {
-                addItem();
-              }}
+              onClick={addItem}
               className="addItem"
               tabIndex={0}
             >+</button>

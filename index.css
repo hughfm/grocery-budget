@@ -10,9 +10,9 @@ h1 {
 
 input {
   border: none;
-  width: 100%;
   font-size: 14px;
   padding: 8px;
+  background: none;
 }
 
 .header {
@@ -22,16 +22,36 @@ input {
   padding: 16px;
 }
 
+.stickyStats {
+  position: sticky;
+  top: 0;
+  background: white;
+  box-shadow: 0 2px 5px gray;
+  padding: 8px 0;
+}
+
 .itemsList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .listItem {
   border-bottom: 1px solid;
-  border-left: 16px solid gray;
   display: flex;
   justify-content: space-between;
+}
+
+.listItem.edited {
+  border-left: 16px solid orange;
+}
+
+.listItem.saved {
+  border-left: 16px solid green;
+}
+
+.listItem.editing {
+  background: pink;
 }
 
 .addItem {
