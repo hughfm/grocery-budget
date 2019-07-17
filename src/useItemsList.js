@@ -9,10 +9,23 @@ const createItem = id => ({
   amount: DEFAULT_AMOUNT,
 });
 
+const localStorage = window.localStorage;
+
+const getInitialState = () => {
+  const itemsString = localStorage.getItem('items');
+  return itemsString ? JSON.parse(itemsString) : [];
+};
+
 function useItemsList() {
   const id = useRef(0);
-  const [items, setItems] = useState([]);
+
+  const [items, setItemsState] = useState(getInitialState);
   const [editing, setEditing] = useState(null);
+
+  const setItems = (items) => {
+    setItemsState(items);
+    localStorage.setItem('items', JSON.stringify(items));
+  };
 
   const newItem = () => {
     id.current = id.current + 1;
