@@ -2,12 +2,13 @@ import Item from './Item.js';
 import useItemsList from './useItemsList.js';
 import createLocalStorage from './localStorage.js';
 
-const { useState } = React;
+const { useState, useEffect } = React;
 
 const { get: getLocalBudget, set: setLocalBudget } = createLocalStorage('budget');
 
 function App() {
   const [budget, setBudgetState] = useState(() => (getLocalBudget() || 40));
+  const [itemAdded, setItemAdded] = useState(false);
 
   const setBudget = (value) => {
     setBudgetState(value);
@@ -26,6 +27,13 @@ function App() {
   const totalAmount = items.reduce((sum, { amount }) => sum + amount, 0);
   const currentPosition = budget - totalAmount;
   const positionClasses = ["currentPosition"];
+
+  useEffect(() => {
+    if (itemAdded) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      setItemAdded(false);
+    }
+  }, [itemAdded]);
 
   if (currentPosition >= 0) {
     positionClasses.push("positive");
@@ -71,10 +79,13 @@ function App() {
             ))
           }
 
-          <li>
+          <li className="addItem">
             <button
-              onClick={addItem}
-              className="addItem"
+              onClick={() => {
+                addItem();
+                setItemAdded(true);
+              }}
+              className="addItemButton"
               tabIndex={0}
             >+</button>
           </li>
