@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d build",
     "develop": "babel src -d build --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "now-build": "babel src -d dist/build"
   },
   "keywords": [],
   "author": "",
