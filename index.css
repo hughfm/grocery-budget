@@ -10,9 +10,11 @@ h1 {
 
 input {
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   padding: 8px;
   background: none;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .header {
