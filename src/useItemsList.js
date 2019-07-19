@@ -1,6 +1,6 @@
 import createLocalStorage from './localStorage.js';
 
-const { useState, useRef } = React;
+const { useState, useRef, useEffect } = React;
 
 const DEFAULT_AMOUNT = 0;
 const DEFAULT_NAME = 'New Item';
@@ -60,6 +60,21 @@ function useItemsList() {
   const destroyItem = id => () => {
     setItems(items.filter(item => item.id !== id));
   };
+
+  useEffect(() => {
+    const handleStorageChange = ({ key }) => {
+      if (key === 'items') {
+        const newState = getLocalItems() || [];
+        setItemsState(newState);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [window]);
 
   return {
     items,

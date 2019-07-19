@@ -22,6 +22,10 @@ function Item({
     }
   }, [editing]);
 
+  useEffect(() => {
+    setDraft(item);
+  }, [item]);
+
   const updateOnEnter = ({ key }) => {
     if (key === 'Enter') update(draft);
   };
