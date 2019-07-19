@@ -27,7 +27,7 @@ function Item({
   }, [item]);
 
   const updateOnEnter = ({ key }) => {
-    if (key === 'Enter') update(draft);
+    if (key === 'Enter') update(Object.assign({}, draft, { amount: draft.amount || 0 }));
   };
 
   const editOnEnter = ({ key }) => {
@@ -88,7 +88,11 @@ function Item({
             value={draftAmount}
             ref={amountInput}
             className="itemAmount"
-            onChange={({ target }) => setDraft(Object.assign({}, draft, { amount: parseFloat(target.value) }))}
+            onChange={
+              ({ target }) => setDraft(
+                Object.assign({}, draft, { amount: parseFloat(target.value) || null })
+              )
+            }
           />
         ) : (
           <div
