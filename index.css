@@ -44,6 +44,7 @@ input {
   justify-content: space-between;
   align-items: center;
   min-height: 56px;
+  transition: border 0.3s;
 }
 
 .listItem.edited {
