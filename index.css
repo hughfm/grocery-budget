@@ -89,6 +89,9 @@ input {
 .removeItem {
   flex-grow: 0;
   padding: 8px;
+  border: none;
+  border-radius: 0;
+  background: none;
 }
 
 .itemAmount, .itemName {

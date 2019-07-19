@@ -100,10 +100,10 @@ function Item({
         )
       }
 
-      <span
+      <button
         onClick={destroy}
         className="removeItem"
-      >X</span>
+      >🗑️</button>
     </li>
   );
 }
