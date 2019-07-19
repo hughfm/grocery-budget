@@ -95,10 +95,21 @@ input {
   background: none;
 }
 
-.itemAmount, .itemName {
-  flex-grow: 1;
+.itemAmount, .itemName, .itemQuantity {
   flex-basis: 0;
   padding: 8px;
+}
+
+.itemAmount {
+  flex-grow: 1;
+}
+
+.itemQuantity {
+  flex-grow: 0.5;
+}
+
+.itemName {
+  flex-grow: 3;
 }
 
 .budgetInput {
@@ -127,4 +138,8 @@ input {
 
 .currentPosition.negative {
   background: lightcoral;
+}
+
+.computedItemTotal {
+  padding: 0 8px;
 }

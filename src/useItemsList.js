@@ -4,11 +4,13 @@ const { useState, useRef, useEffect } = React;
 
 const DEFAULT_AMOUNT = 0;
 const DEFAULT_NAME = '';
+export const DEFAULT_UNITS = 1;
 
 const createItem = id => ({
   id,
   name: DEFAULT_NAME,
   amount: DEFAULT_AMOUNT,
+  quantity: DEFAULT_UNITS,
 });
 
 const { get: getLocalItems, set: setLocalItems } = createLocalStorage('items');

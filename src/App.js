@@ -1,5 +1,5 @@
 import Item from './Item.js';
-import useItemsList from './useItemsList.js';
+import useItemsList, { DEFAULT_UNITS } from './useItemsList.js';
 import createLocalStorage from './localStorage.js';
 
 const { useState, useEffect } = React;
@@ -24,7 +24,12 @@ function App() {
     editItem,
   } = useItemsList();
 
-  const totalAmount = items.reduce((sum, { amount }) => sum + amount, 0);
+  const totalAmount = items
+    .reduce(
+      (sum, { amount, quantity = DEFAULT_UNITS }) => sum + (amount * quantity),
+      0
+    );
+
   const currentPosition = budget - totalAmount;
   const positionClasses = ["currentPosition"];
 

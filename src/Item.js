@@ -1,3 +1,5 @@
+import { DEFAULT_UNITS } from './useItemsList.js';
+
 const { useRef, useState, useEffect } = React;
 
 function Item({
@@ -9,11 +11,22 @@ function Item({
 }) {
   const nameInput = useRef();
   const amountInput = useRef();
+  const quantityInput = useRef();
 
   const [draft, setDraft] = useState(item);
 
-  const { id, name, amount } = item;
-  const { name: draftName, amount: draftAmount } = draft;
+  const {
+    id,
+    name,
+    amount,
+    quantity = DEFAULT_UNITS,
+  } = item;
+
+  const {
+    name: draftName,
+    amount: draftAmount,
+    quantity: draftQuantity = 1,
+  } = draft;
 
   useEffect(() => {
     if (editing && nameInput.current) {
@@ -26,6 +39,8 @@ function Item({
     setDraft(item);
   }, [item]);
 
+  const itemTotal = quantity * amount;
+
   const updateOnEnter = ({ key }) => {
     if (key === 'Enter') update(Object.assign({}, draft, { amount: draft.amount || 0 }));
   };
@@ -34,7 +49,9 @@ function Item({
     if (key === 'Enter') edit();
   };
 
-  const hasUnsavedChanges = name !== draftName || amount !== draftAmount;
+  const hasUnsavedChanges = name !== draftName
+    || amount !== draftAmount
+    || quantity !== draftQuantity;
 
   const classNames = ['listItem'];
 
@@ -64,6 +81,32 @@ function Item({
       {
         editing ? (
           <input
+            type="number"
+            min={0}
+            value={draftQuantity}
+            ref={quantityInput}
+            className="itemQuantity"
+            onChange={
+              ({ target }) => setDraft(
+                Object.assign({}, draft, { quantity: parseInt(target.value) || null })
+              )
+            }
+          />
+        ) : (
+          <div
+            className="itemQuantity"
+            tabIndex={0}
+          >
+            {quantity}
+          </div>
+        )
+      }
+
+      <span>x</span>
+
+      {
+        editing ? (
+          <input
             type="text"
             value={draftName}
             ref={nameInput}
@@ -79,6 +122,8 @@ function Item({
           </div>
         )
       }
+
+      <span>@</span>
 
       {
         editing ? (
@@ -99,10 +144,14 @@ function Item({
             className="itemAmount"
             tabIndex={0}
           >
-            {`$${amount}`}
+            ${amount}
           </div>
         )
       }
+
+      <span className="each">ea.</span>
+
+      <span className="computedItemTotal">(${itemTotal})</span>
 
       <button
         onClick={destroy}
