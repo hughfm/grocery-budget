@@ -3,7 +3,7 @@ import createLocalStorage from './localStorage.js';
 const { useState, useRef, useEffect } = React;
 
 const DEFAULT_AMOUNT = 0;
-const DEFAULT_NAME = 'New Item';
+const DEFAULT_NAME = '';
 
 const createItem = id => ({
   id,
