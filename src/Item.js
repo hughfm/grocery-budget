@@ -48,6 +48,12 @@ function Item({
     classNames.push('editing');
   }
 
+  if (amount === 0) {
+    classNames.push('amountNotSet');
+  } else {
+    classNames.push('amountSet');
+  }
+
   return (
     <li
       key={id}

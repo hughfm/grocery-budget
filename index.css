@@ -58,6 +58,15 @@ input {
   background: pink;
 }
 
+.listItem.amountNotSet {
+  font-weight: bold;
+
+}
+
+.listItem.amountSet {
+  color: gray;
+}
+
 .addItem {
   position: sticky;
   position: -webkit-sticky;
