@@ -122,8 +122,8 @@ function Item({
                       ? parseInt(target.value) || null
                       : parseFloat(target.value) || null,
                     totalAmount: draftQuantityType === UNIT_QTY_TYPE
-                      ? parseInt(target.value) * draftAmount
-                      : parseFloat(target.value) / 1000 * draftAmount,
+                      ? (parseInt(target.value) * draftAmount)
+                      : (parseFloat(target.value) / 1000 * draftAmount),
                   }
                 )
               )
@@ -185,7 +185,9 @@ function Item({
                   draft,
                   {
                     amount: parseFloat(target.value) || null,
-                    totalAmount: parseFloat(target.value) * draftQuantity,
+                    totalAmount: draftQuantityType === UNIT_QTY_TYPE
+                      ? (parseFloat(target.value) * draftQuantity)
+                      : (parseFloat(target.value) * draftQuantity / 1000),
                   }
                 )
               )
