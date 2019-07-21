@@ -1,6 +1,31 @@
-import { DEFAULT_UNITS } from './useItemsList.js';
+import { WEIGHT_QTY_TYPE, UNIT_QTY_TYPE } from './useItemsList.js';
 
 const { useRef, useState, useEffect } = React;
+
+function toggleQuantityType(type) {
+  switch (type) {
+    case UNIT_QTY_TYPE:
+      return WEIGHT_QTY_TYPE;
+    case WEIGHT_QTY_TYPE:
+      return UNIT_QTY_TYPE;
+    default:
+      return undefined;
+  }
+}
+
+function amountSuffix(quantityType) {
+  return {
+    [UNIT_QTY_TYPE]: 'ea.',
+    [WEIGHT_QTY_TYPE]: '/kg',
+  }[quantityType];
+}
+
+function quantitySuffix(quantityType) {
+  return {
+    [UNIT_QTY_TYPE]: 'x',
+    [WEIGHT_QTY_TYPE]: 'g',
+  }[quantityType];
+}
 
 function Item({
   item,
@@ -19,13 +44,16 @@ function Item({
     id,
     name,
     amount,
-    quantity = DEFAULT_UNITS,
+    quantity,
+    quantityType,
+    totalAmount,
   } = item;
 
   const {
     name: draftName,
     amount: draftAmount,
     quantity: draftQuantity = 1,
+    quantityType: draftQuantityType = UNIT_QTY_TYPE,
   } = draft;
 
   useEffect(() => {
@@ -38,8 +66,6 @@ function Item({
   useEffect(() => {
     setDraft(item);
   }, [item]);
-
-  const itemTotal = quantity * amount;
 
   const updateOnEnter = ({ key }) => {
     if (key === 'Enter') update(Object.assign({}, draft, { amount: draft.amount || 0 }));
@@ -88,7 +114,18 @@ function Item({
             className="itemQuantity"
             onChange={
               ({ target }) => setDraft(
-                Object.assign({}, draft, { quantity: parseInt(target.value) || null })
+                Object.assign(
+                  {},
+                  draft,
+                  {
+                    quantity: draftQuantityType === UNIT_QTY_TYPE
+                      ? parseInt(target.value) || null
+                      : parseFloat(target.value) || null,
+                    totalAmount: draftQuantityType === UNIT_QTY_TYPE
+                      ? parseInt(target.value) * draftAmount
+                      : parseFloat(target.value) / 1000 * draftAmount,
+                  }
+                )
               )
             }
           />
@@ -97,12 +134,20 @@ function Item({
             className="itemQuantity"
             tabIndex={0}
           >
-            {quantity}
+            {quantity || 1}
           </div>
         )
       }
 
-      <span>x</span>
+      <span>
+        {
+          editing ? (
+            quantitySuffix(draftQuantityType)
+          ) : (
+            quantitySuffix(quantityType || UNIT_QTY_TYPE)
+          )
+        }
+      </span>
 
       {
         editing ? (
@@ -135,7 +180,14 @@ function Item({
             className="itemAmount"
             onChange={
               ({ target }) => setDraft(
-                Object.assign({}, draft, { amount: parseFloat(target.value) || null })
+                Object.assign(
+                  {},
+                  draft,
+                  {
+                    amount: parseFloat(target.value) || null,
+                    totalAmount: parseFloat(target.value) * draftQuantity,
+                  }
+                )
               )
             }
           />
@@ -149,9 +201,29 @@ function Item({
         )
       }
 
-      <span className="each">ea.</span>
+      {
+        editing ? (
+          <button
+            onClick={() => {
+              setDraft(
+                Object.assign(
+                  {},
+                  draft,
+                  { quantityType: toggleQuantityType(draftQuantityType) }
+                )
+              );
+            }}
+          >
+            {amountSuffix(draftQuantityType)}
+          </button>
+        ) : (
+          <span className="each">
+            {amountSuffix(quantityType || UNIT_QTY_TYPE)}
+          </span>
+        )
+      }
 
-      <span className="computedItemTotal">(${itemTotal})</span>
+      {!editing && <span className="computedItemTotal">(${totalAmount || ((quantity || 1) * amount)})</span>}
 
       <button
         onClick={destroy}

@@ -4,13 +4,19 @@ const { useState, useRef, useEffect } = React;
 
 const DEFAULT_AMOUNT = 0;
 const DEFAULT_NAME = '';
+
 export const DEFAULT_UNITS = 1;
+export const DEFAULT_WEIGHT = 0;
+export const WEIGHT_QTY_TYPE = 'WEIGHT';
+export const UNIT_QTY_TYPE = 'UNIT';
 
 const createItem = id => ({
   id,
   name: DEFAULT_NAME,
   amount: DEFAULT_AMOUNT,
   quantity: DEFAULT_UNITS,
+  quantityType: UNIT_QTY_TYPE,
+  totalAmount: DEFAULT_UNITS * DEFAULT_AMOUNT,
 });
 
 const { get: getLocalItems, set: setLocalItems } = createLocalStorage('items');
@@ -78,6 +84,24 @@ function useItemsList() {
     };
   }, [window]);
 
+  const totalAmount = items
+    .reduce(
+      (sum, { totalAmount, quantity, amount, quantityType }) => {
+        if (totalAmount) return sum + totalAmount;
+
+        if (!quantityType || quantityType === UNIT_QTY_TYPE) {
+          return sum + ((quantity || 1) * amount);
+        }
+
+        if (quantityType === WEIGHT_QTY_TYPE) {
+          return sum + ((quantity || 1000) * amount / 1000);
+        }
+
+        return sum;
+      },
+        0
+    );
+
   return {
     items,
     addItem,
@@ -85,6 +109,7 @@ function useItemsList() {
     destroyItem,
     editing,
     editItem,
+    totalAmount,
   };
 }
 
