@@ -97,6 +97,10 @@ function Item({
     classNames.push('amountSet');
   }
 
+  const computedTotal = totalAmount
+    ? totalAmount.toFixed(2)
+    : ((quantity || 1) * amount).toFixed(2);
+
   return (
     <li
       key={id}
@@ -225,7 +229,13 @@ function Item({
         )
       }
 
-      {!editing && <span className="computedItemTotal">(${totalAmount || ((quantity || 1) * amount)})</span>}
+      {
+        !editing && (
+          <span className="computedItemTotal">
+            ${computedTotal}
+          </span>
+        )
+      }
 
       <button
         onClick={destroy}
