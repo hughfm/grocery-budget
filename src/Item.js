@@ -38,6 +38,10 @@ function Item({
   const amountInput = useRef();
   const quantityInput = useRef();
 
+  const [armedForDestroy, setArmedForDestroy] = useState(false);
+
+  const armForDestroy = () => setArmedForDestroy(true);
+
   const [draft, setDraft] = useState(item);
 
   const {
@@ -68,7 +72,10 @@ function Item({
   }, [item]);
 
   const updateOnEnter = ({ key }) => {
-    if (key === 'Enter') update(Object.assign({}, draft, { amount: draft.amount || 0 }));
+    if (key === 'Enter') {
+      setArmedForDestroy(false);
+      update(Object.assign({}, draft, { amount: draft.amount || 0 }));
+    }
   };
 
   const editOnEnter = ({ key }) => {
@@ -237,10 +244,14 @@ function Item({
         )
       }
 
-      <button
-        onClick={destroy}
-        className="removeItem"
-      >🗑️</button>
+      {
+        editing && (
+          <button
+            onClick={armedForDestroy ? destroy : armForDestroy}
+            className={armedForDestroy ? "removeItem armed" : "removeItem"}
+          >🗑️</button>
+        )
+      }
     </li>
   );
 }

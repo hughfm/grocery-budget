@@ -95,6 +95,10 @@ input {
   background: none;
 }
 
+.removeItem.armed {
+  background: lightcoral;
+}
+
 .itemAmount, .itemName, .itemQuantity {
   flex-basis: 0;
   padding: 8px;
