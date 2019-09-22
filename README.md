@@ -12,7 +12,7 @@ Add items like a to-do list, putting the name/description in the main text field
 Add a quantity for each item, e.g., "3 x Tomato tins".
 
 Leave the unit price blank until you take the item off the shelf at the store, at which point the whole item line will read something like
-"3 x Tomato tins @ $1.50 ea. = $1.50" (the total price for the item is calculated for you at the end of the line.
+"3 x Tomato tins @ $1.50 ea. = $4.50" (the total price for the item is calculated for you at the end of the line.
 
 When editing an item, press the 'ea/' button to switch that item into '/kg' pricing, which allows you to specificy a quantity in grams and a
 price per kilogram. Use this mode for fresh fruit and vegetables, for example.
