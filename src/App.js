@@ -35,9 +35,9 @@ function App() {
     }
   }, [itemAdded]);
 
-  if (currentPosition >= 0) {
+  if (currentPosition > 0) {
     positionClasses.push("positive");
-  } else {
+  } else if (currentPosition < 0) {
     positionClasses.push("negative");
   }
 
@@ -47,20 +47,26 @@ function App() {
         <h1>Groceries</h1>
       </header>
       <div className="stickyStats">
-        <div>
-          <input
-            type="number"
-            value={budget}
-            onChange={({ target }) => setBudget(target.value)}
-            className="budgetInput"
-          />
+        <div className="statsTopLine">
+          <label>
+            Enter total budget:
+            $<input
+              type="number"
+              value={budget}
+              onChange={({ target }) => setBudget(target.value)}
+              className="budgetInput"
+            />
+          </label>
+          <span className="runningTotal">
+            Running total:
+            ${totalAmount.toFixed(2)}
+          </span>
         </div>
-        <div className="totalAndPosition">
-          <div className="runningTotal">
-            {totalAmount.toFixed(2)}
-          </div>
+        <div className="statsBottomLine">
           <div className={positionClasses.join(" ")}>
-            {currentPosition.toFixed(2)}
+            {currentPosition < 0 ? "-" : (currentPosition > 0 ? "+" : "")}${Math.abs(currentPosition).toFixed(2)}
+            &nbsp;
+            {currentPosition < 0 ? "over!" : "to spend"}
           </div>
         </div>
       </div>

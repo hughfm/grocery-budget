@@ -168,6 +168,7 @@ function Item({
             ref={nameInput}
             onChange={({ target }) => setDraft(Object.assign({}, draft, { name: target.value }))}
             className="itemName"
+            placeholder="New Item"
           />
         ) : (
           <div
@@ -239,6 +240,7 @@ function Item({
       {
         !editing && (
           <span className="computedItemTotal">
+            =
             ${computedTotal}
           </span>
         )
