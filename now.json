@@ -1,5 +1,8 @@
 {
+  "name": "groceries",
   "version": 2,
+  "alias": ["groceries.hughfm.com"],
+  "scope": "hughfmiddleton@gmail.com",
   "builds": [
     { "src": "package.json", "use": "@now/static-build" },
     { "src": "index.html", "use": "@now/static" },
