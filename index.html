@@ -1,14 +1,30 @@
 <!doctype html>
 <html>
-<head>
-  <title>Grocery Budget</title>
-  <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-  <script type="module" src="./build/index.js"></script>
-  <link rel="stylesheet" href="./index.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <div id="app"></div>
-</body>
+  <head>
+    <title>Groceries</title>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script type="module" src="./build/index.js"></script>
+    <link rel="stylesheet" href="./index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-79887830-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-79887830-3');
+    </script>
+  </head>
+  <body>
+    <div id="app" class="app"></div>
+    <noscript>
+      Sorry, a modern browser with Javascript enabled is required to run this web app.
+    </noscript>
+    <script nomodule>
+      document.body.innerHTML = 'Sorry, a modern browser that supports ES2015 modules is required to use this web app.';
+    </script>
+  </body>
 </html>
