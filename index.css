@@ -29,6 +29,11 @@ input {
   padding: 16px;
 }
 
+.credits {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
 .stickyStats {
   position: sticky;
   position: -webkit-sticky;

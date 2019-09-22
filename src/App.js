@@ -45,6 +45,9 @@ function App() {
     <div>
       <header className="header">
         <h1>Groceries</h1>
+        <div className="credits">
+          Created by <a href="https://www.hughfm.com">Hugh Middleton</a>. View the code on <a href="https://www.github.com/hughfm/grocery-budget">GitHub</a>.
+        </div>
       </header>
       <div className="stickyStats">
         <div className="statsTopLine">
