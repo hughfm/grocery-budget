@@ -17,6 +17,11 @@ input {
   min-width: 0;
 }
 
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .header {
   text-align: center;
   background-color: lightgray;

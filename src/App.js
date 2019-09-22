@@ -44,7 +44,7 @@ function App() {
   return (
     <div>
       <header className="header">
-        <h1>Grocery Budget</h1>
+        <h1>Groceries</h1>
       </header>
       <div className="stickyStats">
         <div>
